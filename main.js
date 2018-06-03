@@ -4,6 +4,7 @@ function submit() {
     var ageOfDeath = document.getElementById('input-deathAge').value;
 
     document.getElementById("initial-input").remove();
+    document.getElementById("main_grid").style.display="inline-block";
 
     //add checks ?
     var bdayDate = new Date(parseDate(bday));

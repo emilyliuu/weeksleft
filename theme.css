@@ -57,7 +57,7 @@ a{color:#eee;text-decoration:none;}
 
 #main_grid {
 	border: solid;
-	display: inline-block;
+	display: none; /*inline-block;*/
 }
 
 .row {
