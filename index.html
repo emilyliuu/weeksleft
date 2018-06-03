@@ -1,48 +1,127 @@
 <html>
 <head>
+    <style>
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    body{
+      background-color:#bec8d8;
+      color: #161616;
+      font-family: "Open Sans", sans-serif;
+    }
+
+    a{color:#eee;text-decoration:none;}
+
+    .input {
+        margin: 1em;
+        max-width: 350px;
+        width: calc(100% - 2em);
+    }
+
+    .input_field {
+        font-size: 1.5em;
+        letter-spacing: 1px;
+        border: none;
+        border-radius: 0;
+        background: #f0f0f0;
+        color: #aaa;
+        font-weight: bold;
+        font-family: "Open Sans", sans-serif;
+        -webkit-appearance: none; /* for box shadows to show on iOS */
+    }
+
+    .input_field:focus {
+        outline: none;
+    }
+
+    .input_label {
+        color: #161616;
+
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    </style>
     <script>
-        function parseDate(str) {
-        var mdy = str.split('/'); return new Date(mdy[2], mdy[0]-1, mdy[1]); 
+        function submit() {
+
+            var bday = document.getElementById('input-birthdate').value;
+            var ageOfDeath = document.getElementById('input-deathAge').value;
+
+            document.getElementById("initial-input").remove();
+
+            //add checks ?
+            var bdayDate = new Date(parseDate(bday));
+            var deathDate = new Date(bday);
+            deathDate.setFullYear(deathDate.getFullYear() + parseInt(ageOfDeath));
+                
+            var weeksLeft = Math.ceil((deathDate - bdayDate) / (1000 * 3600 * 24 * 7));
+
+            document.getElementById("wltl").innerHTML = weeksLeft;
+            }
+
+            function parseDate(str) {
+            var mdy = str.split('/'); return new Date(mdy[2], mdy[0]-1, mdy[1]); 
         }
 
-        function weekDiff(first, second) {
-        return Math.round((second-first));
-        }
+        //checks to add
+        // if (bday == null || bday == "") {
+        //     bday = "User cancelled the prompt.";
+        // }
+        // else
+        // {
+        //     bdayDate = parseDate(bday);
+        // }
 
-        var bday = prompt("Enter birthday", "mm/dd/yyyy");
-
-        if (bday == null || bday == "") {
-            bday = "User cancelled the prompt.";
-        }
-        else
-        {
-            bdayDate = parseDate(bday);
-        }
-
-        var death = prompt("What age will you die?", "100");
-
-        if (death == null || death == "") {
-            death = "User cancelled the prompt.";
-        }
-
-        window.prompt("bday:", bdayDate);
-
-        var deathDate = new Date(bdayDate);
-        deathDate.setFullYear(deathDate.getFullYear() + parseInt(death));
-
-        window.prompt("death day:", deathDate);
-
-        var weeksLeft = (deathDate - bdayDate);
-
-        console.log(bdayDate);
-        console.log(deathDate);
-        console.log(deathDate - bdayDate);
-        console.log(Math.ceil(deathDate - bdayDate) / (1000 * 3600 * 24 * 7));
-
-        window.prompt("you have", weeksLeft, "left");
+        // if (death == null || death == "") {
+        //     death = "User cancelled the prompt.";
+        // }
+        
     </script>
 </head>
-<body>
 
+<body>
+      <div class = "container">
+        <div class = "content" id = "initial-input">
+            <div class = "input">
+                <div class="input_label">
+                    <span class="input_label-content">What is your birthday?</span>
+                </div>
+                <input class="input_field" type="text" id="input-birthdate" placeholder="mm/dd/yyyy">
+            </div>
+
+                <br>
+
+            <div class="input">
+                <div class="input_label">
+                    <span class="input_label-content">When will you die?</span>
+                </div>
+                <input class="input_field" type="text" id="input-deathAge">
+            </div>
+                    
+            <br>
+            <button type ="button" id="submit-btn" onclick="submit()">Go</button>
+        </div>
+
+        <div class = "content" id = "wltl">
+        </div>
+    </div>
 </body>
 </html>
