@@ -54,3 +54,32 @@ a{color:#eee;text-decoration:none;}
     -ms-user-select: none;
     user-select: none;
 }
+
+#main_grid {
+	border: solid;
+	display: inline-block;
+}
+
+.row {
+}
+
+.weekSquare {
+	border: solid white 1px;
+}
+
+.rowElement {
+	display: inline-block;
+	position: relative;
+	width:15px;
+	height:15px;
+	padding: 1px;
+}
+
+.weekSquareFill {
+	background: red;
+	position: absolute;
+	height: 100%;
+	left:0;
+	top:0;
+    z-index: -1;
+}
