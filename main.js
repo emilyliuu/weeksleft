@@ -1,39 +1,79 @@
-function parseDate(str) {
-    var mdy = str.split('/'); return new Date(mdy[2], mdy[0]-1, mdy[1]); 
+function numWeeks(dateA, dateB) {
+    return (dateB - dateA) / (1000 * 3600 * 24 * 7)
 }
 
-function weekDiff(first, second) {
-    return Math.round((second-first));
+// Returns HTML for squares based on the number of weeks passed in
+function renderSquares(bdayDate, deathDate, currentTime) {
+    var totalWeeks = numWeeks(bdayDate, deathDate);
+    var weeksToNow = numWeeks(bdayDate, currentTime);
+    var totalYears = (totalWeeks / 52);
+
+    // TODO compute color
+    // TODO optimize by only generating and updated the ones we need to
+    // TODO click events for goal creation
+
+    var html = '';
+    for (var year = 0; year < totalYears; year++) {
+        html += '<div class="row">' + '<div class="rowElement yearNum">' + (year + 1) + '</div>';
+        for (var week = 0; week < 52; week++) {
+            var weekDiff = weeksToNow - (week + ((year + 1) * 52) + 1); // 1 - 52, 53 - 104 etc...
+            var weekSqureFillPercentage = Math.min(Math.max(0, weekDiff), 1); // Clamp to [0, 1]
+
+            html +=
+                '<div class="rowElement weekSquare">' +
+                    //(week + 1) +
+                    '<div class="weekSquareFill" style="width:' + (weekSqureFillPercentage * 100) + '%"' + '></div>' +
+                '</div>'
+            ;
+        }
+        html += '</div>'
+    }
+
+    return html;
 }
 
-var bday = prompt("Enter birthday", "mm/dd/yyyy");
+function renderLoop (bdayDate, deathDate) {
+    var squaresHTML = renderSquares(bdayDate, deathDate, new Date());
+    document.getElementById("main_grid").innerHTML = squaresHTML;
 
-if (bday == null || bday == "") {
-    bday = "User cancelled the prompt.";
-}
-else
-{
-    bdayDate = parseDate(bday);
+    window.requestAnimationFrame(renderLoop.bind(this, bdayDate, deathDate));
 }
 
-var death = prompt("What age will you die?", "100");
-
-if (death == null || death == "") {
-    death = "User cancelled the prompt.";
+var prompts = ["03/25/1993", "90"];
+var promptindex = 0;
+prompt = function () {
+    var ret = prompts[promptindex];
+    promptindex += 1;
+    return ret;
 }
 
-window.prompt("bday:", bdayDate);
+function run() {
+    function parseDate(str) {
+        var mdy = str.split('/'); return new Date(mdy[2], mdy[0]-1, mdy[1]); 
+    }
 
-var deathDate = new Date(bdayDate);
-deathDate.setFullYear(deathDate.getFullYear() + parseInt(death));
+    function weekDiff(first, second) {
+        return Math.round((second-first));
+    }
 
-window.prompt("death day:", deathDate);
+    var bday = prompt("Enter birthday", "mm/dd/yyyy");
 
-var weeksLeft = (deathDate - bdayDate);
+    if (bday == null || bday == "") {
+        bday = "User cancelled the prompt.";
+    }
+    else
+    {
+        bdayDate = parseDate(bday);
+    }
 
-console.log(bdayDate);
-console.log(deathDate);
-console.log(deathDate - bdayDate);
-console.log(Math.ceil(deathDate - bdayDate) / (1000 * 3600 * 24 * 7));
+    var death = prompt("What age will you die?", "100");
 
-window.prompt("you have", weeksLeft, "left");
+    if (death == null || death == "") {
+        death = "User cancelled the prompt.";
+    }
+
+    var deathDate = new Date(bdayDate);
+    deathDate.setFullYear(deathDate.getFullYear() + parseInt(death));
+
+    renderLoop(bdayDate, deathDate);
+}
