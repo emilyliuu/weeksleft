@@ -83,3 +83,7 @@ a{color:#eee;text-decoration:none;}
 	top:0;
     z-index: -1;
 }
+
+.weekSquareFill.intention {
+	background: blue;
+}
