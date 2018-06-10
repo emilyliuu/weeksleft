@@ -116,7 +116,7 @@ function renderLoop (appState) {
     var squares = renderSquares(appState.startDate, appState.numYears, appState.intentions, new Date());
     $("#main_grid").html(squares);
 
-    window.requestAnimationFrame(renderLoop.bind(this, appState));
+    setTimeout(renderLoop.bind(this, appState), 10000);
 }
 
 //checks to add
